@@ -18,6 +18,7 @@ testCases.add = function(desc, obj){
   testCases.push({'desc':desc, 'obj':obj});
 }
 testCases.add('list in list', [[1,2,3,[4,5]]]);
+testCases.add('a simple string', "hello greg");
 
 console.log('------------OO Style-------------');
 //OO Style
