@@ -1,4 +1,4 @@
-YAML=require('./yaml');
+YAML=require('./jsonToYaml');
 
 var link={'subsub':"x"};
 

@@ -1,4 +1,4 @@
-# yaml - A json to yaml serializer  #
+# jsonToYaml - A json to yaml serializer  #
 
 yaml is a very simple JSON to YAML serializer - encoder - dumper. 
 
@@ -18,9 +18,9 @@ right now it doen't support the spec completely. It just works for my use case ;
 
 Usage is simple:
 
-npm install yaml
+npm install jsonToYaml
 
-YAML=require ('yaml');
+YAML=require ('jsonToYaml');
 
 Then you can use it in an OO fashion style:
 {'YAML': {'aint': 'markup'}}.toYaml();

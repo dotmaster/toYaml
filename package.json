@@ -1,0 +1,31 @@
+{
+   "name": "jsonToYaml",
+   "description": "A simple JSON to YAML  serializer - dumper - encoder - whatever",
+   "tags": [
+       "yaml",
+       "parser",
+       "encoder",
+       "json",
+       "dumper",
+       "serialize",
+       "node" //what else ? ;)
+   ],
+   "version": "0.0.1",
+   "author": {
+      "name" : "Gregor Schwab", 
+      "email" : "gregor@connect-mi.com",
+      "url" : "http://www.connect-mi.com"  
+   },
+   "repository": {
+       "type": "git",
+       "url": "http://github.com/dotmaster/jsonToYaml.git"
+   },
+   "bugs": "http://github.com/dotmaster/jsonToYaml/issues",
+   "engines": [
+       "node >= 0.3.0"
+   ],
+   "main": "jsonToYaml.js",
+   "license" : "Simplified BSD (see License)",
+   "dependencies": {          
+    }
+}
