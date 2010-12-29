@@ -1,11 +1,11 @@
 # jsonToYaml - A json to yaml serializer  #
 
-yaml is a very simple JSON to YAML serializer - encoder - dumper. 
+yaml is a very simple and superfast JSON to YAML serializer - encoder - dumper - whatever you like ;)
 
 ## Features and Support ##
 
 Javascript Objects and Arrays are supported by extending Object.prototype and Array.prototype.
-Right now yaml features cicular dependency resolution and relational links.
+Right now jsonToYaml features cicular dependency resolution and relational links.
 
 
 ## YAML Spec ##
@@ -23,15 +23,15 @@ npm install jsonToYaml
 YAML=require ('jsonToYaml');
 
 Then you can use it in an OO fashion style:
-{'YAML': {'aint': 'markup'}}.toYaml();
+{'YAML': {'aint':{'markup': 'language'}}}.toYaml();
 
 ot if you orefer the functional style:
-YAML.toYaml({'YAML': {'aint': 'markup'}});
+YAML.toYaml({'YAML': {'aint':{'markup': 'language'}}});
  
 ## Options ##
 * you can enable links creation by passing {enableLinks:true} to toYaml({'enableLinks':true})
-Default is on; But some serializers might not understand it, so you can turn it of, by passing false;
-* if you don't need to reencode with yaml from TJ you can use the option {yamlComapatible:false} to make the output look more human readable
+Default is on; But some serializers might not understand it, so you can turn it off, by passing false;
+* if you don't need to reencode with yaml from TJ you can use the option {yamlComapatible:false} to make the output look even more human readable on lists
 
 ## Dependencies ##
 
