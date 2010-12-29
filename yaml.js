@@ -11,20 +11,21 @@ Array.prototype.toYaml=OOToYaml;
 
 exports.toYaml= toYaml;
 
-var link={'subsub':"x"};
-yaml_text = ([{'anObject':{'asubObj':link}}, {x:"abc", y:{x: link, y:[{as:"sff", f:34},{as:"sfdf", f:35},{as:"sasff", f:37}]}},{f:link}]).toYaml();
-console.log (yaml_text);
 
 function OOToYaml(options){
   return toYaml(this, options);
 }
 
 function toYaml(obj, options){
-  if (typeof options.enableLinks!==undefined)
+  if (typeof options !== 'undefined' && typeof options.enableLinks!=='undefined')
     enableLinks=options.enableLinks;
   if (enableLinks) preProcessLinks(obj);
-  console.log(links);
-  return walkToYaml(obj);
+  //console.log(links);
+  var ret = walkToYaml(obj);
+  //reset global objects
+  objh={}, links=[];
+  idCounter = 0;
+  return ret;
 }
 function walkToYaml(obj, l, before) {
     if (typeof before === 'undefined') var before=""; 
@@ -133,7 +134,7 @@ function searchLink(obj){
   for (var j=0; j<len; j++) {
     var item=links[j];
     if(item.linkedTo===obj && typeof item.touched==='undefined'){
-      console.log('searchLink match item ', sys.inspect(item), obj);
+      //console.log('searchLink match item ', sys.inspect(item), obj);
       item.touched=true;
       var retVal={'text':'&'+item.linkedToId, 'stop':false}
       return retVal;
@@ -151,7 +152,7 @@ function history(obj){
   for (key in objh){
     var value=objh[key];
     if(obj==value){
-      console.log('match item ' , key, sys.inspect(value), obj);
+      //console.log('match item ' , key, sys.inspect(value), obj);
       links.push({'object': obj, 'linkedTo':value, 'linkedToId':key});
     }
   } 
