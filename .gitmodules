@@ -1,0 +1,6 @@
+[submodule "support/yaml"]
+	path = support/yaml
+	url = https://github.com/visionmedia/js-yaml.git
+[submodule "support/underscore"]
+	path = support/underscore
+	url = https://github.com/documentcloud/underscore.git

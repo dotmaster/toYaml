@@ -1,7 +1,10 @@
 
 var sys=require('sys');
+var opts={
+  enableLinks:true, //default
+  yamlCompatible:true //default
+}
 
-var enableLinks=true; //default
 var objh={}, links=[];
 var idCounter = 0;
 
@@ -17,69 +20,76 @@ function OOToYaml(options){
 }
 
 function toYaml(obj, options){
-  if (typeof options !== 'undefined' && typeof options.enableLinks!=='undefined')
-    enableLinks=options.enableLinks;
-  if (enableLinks) preProcessLinks(obj);
+  helper.extend(opts, options);
+  if (opts.enableLinks) preProcessLinks(obj);
   //console.log(links);
+  var header = "";
   var ret = walkToYaml(obj);
   //reset global objects
   objh={}, links=[];
   idCounter = 0;
-  return ret;
-}
-function walkToYaml(obj, l, before) {
-    if (typeof before === 'undefined') var before=""; 
-    if (typeof l === 'undefined') var l=0;
-    var out = "";
-    var level=l;
-    if (Object.prototype.toString.call(obj) === '[object Array]') {
-        var i = 0, len = obj.length;
-        for ( ; i < len; i++ ) { //for each thang in the array
+  return header+ret+"\n";
 
-            out += '\n'; //draw a new line             
-            out += drawIndent(level, 'array'); //draw the indent
+  function walkToYaml(obj, l, before) {
+      if (typeof before === 'undefined') var before=""; 
+      if (typeof l === 'undefined') var l=0;
+      var level=l;
+      var out="";
+      if (Object.prototype.toString.call(obj) === '[object Array]') {
+          var i = 0, len = obj.length;
+          for ( ; i < len; i++ ) { //for each thang in the array
+
+              out += '\n'; //draw a new line             
+              out += drawIndent(level, 'array'); //draw the indent
 
 
-          out += walkToYaml(obj[i], level+1, 'array'); //draw the inner thang
-        }
-        return out;
-    }
-    if (typeof obj === 'object') {
-        //if (enableLinks ){
-        //  var match= history(obj);
-        //}
-        var i, index=0;
-            
-        //preprocess the object to find the perfect indent
-        var maxKeyLength=0;
-        for ( i in obj ){
-          maxKeyLength=Math.max(i.length, maxKeyLength);
-        }
-        if (enableLinks){
-          var ret=searchLink(obj);
-          out += ret.text;
-          if (ret.stop===true){
-            return out;
+            out += walkToYaml(obj[i], level+1, 'array'); //draw the inner thang
           }
-        }
-        for ( i in obj ) {
-          if (!obj.hasOwnProperty(i)) return out;
-          //out+="level " + level +   ' index ' + index + ' before ' + before; 
-          if (index!==0 || before!=="array"){  //if its the first object after an array don't draw newline nor draw an indent, else we use the arrays indentation
-          //else {
-            out += '\n'; //draw a new line             
-            out += drawIndent(level, 'object');
+          return out;
+      }
+      if (typeof obj === 'object') {
+          //if (enableLinks ){
+          //  var match= history(obj);
+          //}
+          var i, index=0;
+
+          //preprocess the object to find the perfect indent
+          var maxKeyLength=0;
+          for ( i in obj ){
+            maxKeyLength=Math.max(i.length, maxKeyLength);
           }
-          //console.log("maxKeyLength ", maxKeyLength)
-          var padding=maxKeyLength - i.length+2;       
-          out += i+": "; //draw the attribute name with padding
-          out += drawIndent(padding);
-          out += walkToYaml(obj[i], level+1, 'object') ; //draw the inner thang
-          index++;
-        }
-        return out;
-    }
-    return obj;
+          if (opts.enableLinks){
+            var ret=searchLink(obj);
+            out += ret.text;
+            if (ret.stop===true){
+              return out;
+            }
+          }
+          for ( i in obj ) {
+            if (!obj.hasOwnProperty(i)) return out;
+            //out+="level " + level +   ' index ' + index + ' before ' + before; 
+            if (index===0 && before === "array" && opts.yamlCompatible){
+              out += '\n'; //draw a new line             
+              out += drawIndent(level, 'object');            
+            }
+            if (index!==0 || before!=="array"){  //if its the first object after an array don't draw newline nor draw an indent, else we use the arrays indentation
+            //else {
+              out += '\n'; //draw a new line             
+              out += drawIndent(level, 'object');
+            }
+            //console.log("maxKeyLength ", maxKeyLength)
+            var padding=maxKeyLength - i.length+2;       
+            out += i+": "; //draw the attribute name with padding
+            //out += drawIndent(padding);
+            out += walkToYaml(obj[i], level+1, 'object') ; //draw the inner thang
+            index++;
+          }
+          return out;
+      }
+      //if(typeof obj === 'string') return '"'+obj+'"'
+      return obj;
+  }
+
 }
 
 
@@ -166,3 +176,26 @@ function history(obj){
   
   return match; 
 }
+
+
+/**
+ * YAML grammar tokens. 
+ */
+
+var tokens = [
+  ['comment', '\n'],
+  ['indent', ' '],
+  ['doc', "---"]
+]
+
+
+helper={
+  // Extend a given object with all the properties in passed-in object(s).
+  extend: function(obj) {
+    Array.prototype.slice.call(arguments, 1).forEach(function(source) {
+      for (var prop in source) obj[prop] = source[prop];
+    });
+    return obj;
+  }
+}
+

@@ -29,8 +29,9 @@ ot if you orefer the functional style:
 YAML.toYaml({'YAML': {'aint': 'markup'}});
  
 ## Options ##
-you can enable links creation by passing {enableLinks:true} to toYaml({'enableLinks':true})
+* you can enable links creation by passing {enableLinks:true} to toYaml({'enableLinks':true})
 Default is on; But some serializers might not understand it, so you can turn it of, by passing false;
+* if you don't need to reencode with yaml from TJ you can use the option {yamlComapatible:false} to make the output look more human readable
 
 ## Dependencies ##
 
