@@ -4,7 +4,8 @@ var defaults={
   enableLinks:true, //default
   yamlCompatible:true, //default
   usePadding:true,
-  maxLevel:50,
+  extendObjects:false,
+  maxLevel:1000,
   maxLevelMessage: function(){return 'Max Object Depth has been reached: maxLevel ' + this.maxLevel+ ' please set maxLevel to a higher level if your object is deeper than this level.'}
 }
 var opts={};
@@ -18,10 +19,21 @@ function resetGlobals(){
   idCounter = 0;
 };
 
+function extendObjects(bool){
+  if(bool){
+    Object.prototype.toYaml=OOToYaml;
+    Array.prototype.toYaml=OOToYaml;
+    opts.extendObjects=true;
+  }else{
+    delete Object.prototype.toYaml;
+    delete Array.prototype.toYaml;  
+    opts.extendObjects=false;      
+  }
 
-Object.prototype.toYaml=OOToYaml;
-Array.prototype.toYaml=OOToYaml;
 
+}
+
+exports.extendObjects= extendObjects;
 exports.toYaml= toYaml;
 exports.preProcessLinks= preProcessLinks;
 exports.resetGlobals=resetGlobals;

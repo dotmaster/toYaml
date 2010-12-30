@@ -47,7 +47,9 @@ console.log (yaml_text);
 //testCases.add('a circular Object', circularObject1);
 console.log('------------OO Style-------------');
 //OO Style
+YAML.extendObjects(true);
 var yaml_text = testObj.toYaml();
+YAML.extendObjects(false);
 console.log (yaml_text);
 console.log('\n\n------------functional Style-------------');
 //functional Style

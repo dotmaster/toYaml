@@ -25,6 +25,7 @@ npm install jsonToYaml
 YAML=require ('jsonToYaml');
 
 Then you can use it in an OO fashion style:
+calling YAML.extendObjects(true);
 {'YAML': {'aint':{'markup': 'language'}}}.toYaml();
 
 ot if you orefer the functional style:

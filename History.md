@@ -1,3 +1,18 @@
+0.0.5 / 2010-12-30
+==================
+
+  * Change the maxDepth Limit to 1000, cause its merely an infinite loop protection
+  
+0.0.5 / 2010-12-30
+==================
+
+  * Added options for making jsonToYaml not extend Array.prototype by default
+  
+0.0.3 - 0.0.4 / 2010-12-30
+==================
+
+    * Added circular dependency checks and some more test cases
+  
 0.0.2 / 2010-12-29
 ==================
 
