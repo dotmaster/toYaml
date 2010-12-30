@@ -37,7 +37,7 @@ call node test.js to run the tests
 ## Options ##
 * you can enable links creation by passing {enableLinks:true} to toYaml({'enableLinks':true})
 Default is on; But some serializers might not understand it, so you can turn it off, by passing false;
-* if you don't need to reencode with yaml from TJ you can use the option {yamlComapatible:false} to make the output look even more human readable on lists
+* if you don't need to reencode with yaml from TJ Holowaychuk you can use the option {yamlComapatible:false} to make the output look even more human readable on lists, however it will fail to reencode into JSON
 
 * there is a security mechanism for circularity which defaults to a depth level of 50 iterations. If you want to set deeper limits set maxLevel to the depth you need.
 
