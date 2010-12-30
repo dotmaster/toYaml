@@ -3,16 +3,18 @@ var sys=require('sys');
 var defaults={
   enableLinks:true, //default
   yamlCompatible:true, //default
+  usePadding:true,
   maxLevel:50,
   maxLevelMessage: function(){return 'Max Object Depth has been reached: maxLevel ' + this.maxLevel+ ' please set maxLevel to a higher level if your object is deeper than this level.'}
 }
 var opts={};
 
-var objh={}, links=[], linkHashIn={}, linkHashOut={}, path=[], Path={};
+var objh={}, links=[], linkHashIn={}, linkHashOut={}, Path={};
 var idCounter = 0;
 
+//reset global objects not very beautiful should go in a closure
 function resetGlobals(){
-  opts={}, objh={}, links=[], linkHashIn={}, linkHashOut={}, path=[], Path={};
+  opts={}, objh={}, links=[], linkHashIn={}, linkHashOut={}, Path={};
   idCounter = 0;
 };
 
@@ -36,7 +38,7 @@ function toYaml(obj, options){
   //console.log('*********preprocess\n', sys.inspect(newObj, false, 10));
   var header = "";
   var ret = walkToYaml(newObj);
-  //reset global objects not very beautiful should go in a closure
+
 
  if(ret!=="")  return header+ret+"\n"
  else return ""
@@ -49,26 +51,23 @@ function toYaml(obj, options){
       if (Object.prototype.toString.call(obj.obj) === '[object Array]') {
           var i = 0, len = obj.obj.length;
           for ( ; i < len; i++ ) { //for each thang in the array
-
-              out += '\n'; //draw a new line             
-              out += drawIndent(level, 'array'); //draw the indent
-
-
+            out += '\n'; //draw a new line             
+            out += drawIndent(level, 'array'); //draw the indent
             out += walkToYaml(obj.obj[i], level+1, 'array'); //draw the inner thang
           }
-          //console.log('array level ', level, 'out ', out);
           return out;
       }
       if (typeof obj.obj === 'object') {
           var i, index=0;
-
+          if (opts.usePadding) {
           //preprocess the object to find the perfect indent
-          var maxKeyLength=0;
-          for ( i in obj.obj ){
-            maxKeyLength=Math.max(i.length, maxKeyLength);
+            var maxKeyLength=0;
+            for ( i in obj.obj ){
+              if (!obj.obj.hasOwnProperty(i)) continue;
+              maxKeyLength=Math.max(i.length, maxKeyLength);
+            }
           }
           if (opts.enableLinks){
-            //console.log('searchin...',obj.id)
             var ret=searchLink(obj.id); //lookup the id of our object in the linksIn linksOut hashes
             out += ret.text;
             if (ret.stop===true){ //if it's a link node, we have to stop iteration here
@@ -77,18 +76,17 @@ function toYaml(obj, options){
           }
           for ( i in obj.obj ) {
             if (!obj.obj.hasOwnProperty(i)) return out;
-            //out+="level " + level +   ' index ' + index + ' before ' + before; 
             if (index===0 && !opts.yamlCompatible){//draw no indent if we don't need to be yaml compatible          
             }else{
-            //if (index!==0 || before!=="array"){  //if its the first object after an array don't draw newline nor draw an indent, else we use the arrays indentation
-            //else {
               out += '\n'; //draw a new line             
               out += drawIndent(level, 'object');
             }
-            //console.log("maxKeyLength ", maxKeyLength)
-            var padding=maxKeyLength - i.length+2;       
+   
             out += i+": "; //draw the attribute name with padding
-            //out += drawIndent(padding);
+            if (opts.usePadding) {
+              var padding=maxKeyLength - i.length; 
+              out += drawIndent(padding);
+            }            
             out += walkToYaml(obj.obj[i], level+1, 'object') ; //draw the inner thang
             index++;
           }

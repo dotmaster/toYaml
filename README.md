@@ -39,7 +39,9 @@ call node test.js to run the tests
 Default is on; But some serializers might not understand it, so you can turn it off, by passing false;
 * if you don't need to reencode with yaml from TJ you can use the option {yamlComapatible:false} to make the output look even more human readable on lists
 
-* there is a security mechanism for circularity which defaults to a depth level of 50 iterations. If you want to set deeper limits set maxLevel to the depth you need.  
+* there is a security mechanism for circularity which defaults to a depth level of 50 iterations. If you want to set deeper limits set maxLevel to the depth you need.
+
+* usePadding: uses a look ahead algorithm to see which is the longest hashtag in a group and pads out the others to match the maximum length  
 
 ## Dependencies ##
 
