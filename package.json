@@ -25,7 +25,7 @@
        "node >= 0.3.0"
    ],
    "main": "jsonToYaml.js",
-   "license" : "Simplified BSD (see License)",
+   "license" : "MIT License (see Readme)",
    "dependencies": {          
     }
 }

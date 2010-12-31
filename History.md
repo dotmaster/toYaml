@@ -1,3 +1,8 @@
+0.0.6 / 2010-12-30
+==================
+
+  * Change the maxDepth Limit back to 50, cause there was a bug with an infinite loop
+  
 0.0.5 / 2010-12-30
 ==================
 
@@ -11,7 +16,7 @@
 0.0.3 - 0.0.4 / 2010-12-30
 ==================
 
-    * Added circular dependency checks and some more test cases
+   * Added circular dependency checks and some more test cases
   
 0.0.2 / 2010-12-29
 ==================
