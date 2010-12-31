@@ -1,6 +1,6 @@
 # jsonToYaml - A json to yaml serializer  #
 
-yaml is a very simple and superfast JSON to YAML serializer - encoder - dumper - whatever you like ;)
+jsonToYaml is a very simple and superfast JSON to YAML serializer - encoder - dumper - whatever you like ;)
 
 ## Features and Support ##
 
