@@ -10,7 +10,7 @@
        "serialize",
        "node" //what else ? ;)
    ],
-   "version": "0.0.6",
+   "version": "0.0.7",
    "author": {
       "name" : "Gregor Schwab", 
       "email" : "gregor@connect-mi.com",
@@ -24,7 +24,7 @@
    "engines": [
        "node >= 0.3.0"
    ],
-   "main": "jsonToYaml.js",
+   "main": "toYaml.js",
    "license" : "MIT License (see Readme)",
    "dependencies": {          
     }

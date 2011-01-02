@@ -1,3 +1,4 @@
+// toYAML - Core - Copyright Gregor Schwab <isimpl@gmail.com> (MIT Licensed)
 
 var sys=require('sys');
 var defaults={
@@ -88,7 +89,7 @@ function toYaml(obj, options){
           }
           for ( i in obj.obj ) {
             if (!obj.obj.hasOwnProperty(i)) return out;
-            if (index===0 && !opts.yamlCompatible){//draw no indent if we don't need to be yaml compatible          
+            if (index===0 && !opts.yamlCompatible){//draw no newline on first item if we don't need to be yaml compatible          
             }else{
               out += '\n'; //draw a new line             
               out += drawIndent(level, 'object');
@@ -146,7 +147,7 @@ function preProcessLinks(obj, options){
 
 function _preProcessLinks(obj, l){
     var level= (typeof l === 'undefined') ? 0:l;
-    if (level>opts.maxLevel) throw new Error(opts.maxLevelMessage());//the maximum Depth of Iterations may not be exceeded
+    if (level>opts.maxLevel) throw new Error(opts.maxLevelMessage() + " " + sys.inspect(obj,false, opt.maxLevel));//the maximum Depth of Iterations may not be exceeded
     var uId=history(obj); //history of onjects and keeps linksIn and links Out of each object
     var newObj={};
     newObj.id=uId    
