@@ -6,7 +6,7 @@ var defaults={
   yamlCompatible:true, //default
   usePadding:true,
   extendObjects:false,
-  maxLevel:1000,
+  maxLevel:50,
   maxLevelMessage: function(){return 'Max Object Depth has been reached: maxLevel ' + this.maxLevel+ ' please set maxLevel to a higher level if your object is deeper than this level.'}
 }
 var opts={};
