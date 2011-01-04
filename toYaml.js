@@ -8,6 +8,7 @@ var defaults = {
     usePadding: true,
     extendObjects: false,
     maxLevel: 100,
+    showHidden:false,
     maxLevelMessage: function() {
         return 'Max Object Depth has been reached: maxLevel ' + this.maxLevel + ' please set maxLevel to a higher level if your object is deeper than this level.'
     }
@@ -184,17 +185,12 @@ function yamlSerializer(options) {
         newObj.obj = obj;
         newObj.key = k
         newObj.keyPath = kp;
-
+        
+        //the maximum Depth of Iterations may not be exceeded
         if (level > opts.maxLevel) {
             maxLevelError = true;
             maxLevelKeyPath = i + "." + maxLevelKeyPath;
             newObj.obj = "[MAX LEVEL REACHED]"
-            return newObj;
-        }
-        //the maximum Depth of Iterations may not be exceeded
-        if (typeof obj == "function") {
-            //for now don't support functions
-            newObj.obj = "[FUNCTION]";
             return newObj;
         }
 
@@ -222,6 +218,21 @@ function yamlSerializer(options) {
             return newObj;
         }
 
+        // Look up the keys of the object.
+        var visible_keys = Object.keys(obj);
+        var keys = opts.showHidden ? Object.getOwnPropertyNames(obj) : visible_keys;
+
+        // Functions without properties can be shortcutted.
+        if (typeof obj === 'function' && keys.length === 0) {
+          if (helper.isRegExp(obj)) {
+            newObj.obj= '[regexp]';
+            return newObj;
+          } else {
+            var name = obj.name ? ': ' + obj.name : '';
+            newObj.obj= '[Function' + name + ']';
+            return newObj;            
+          }
+        }
         // check for empty objects
         if (helper.isEmpty(obj)) {
             newObj.obj = '';
