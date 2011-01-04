@@ -326,7 +326,7 @@ function yamlSerializer(options) {
         var idx;
         if ((idx = oPath.indexOf(newObj.obj)) > -1) {
             var refObj = Path[idx];
-            if (typeof refObj.obj !== "function") {
+            //if (typeof refObj.obj !== "function") {
                 //for now don't support functions
                 refObj.ref = true;
                 if (typeof refObj.refObjects == "undefined") refObj.refObjects = [];
@@ -335,7 +335,7 @@ function yamlSerializer(options) {
                 refObj.circleObjects.push(newObj);
                 newObj.link = refObj.id;
                 newObj.obj = refObj.obj;
-            }
+            //}
             return idx;
             //if its a circle dont push on path
         }
@@ -361,7 +361,7 @@ function yamlSerializer(options) {
             //hash lookup
             var refObj = newoba[idx];
             //hash lookup
-            if (typeof refObj.obj !== "function") {
+            //if (typeof refObj.obj !== "function") {
                 //for now don't support functions
                 refObj.ref = true;
                 if (typeof refObj.refObjects == "undefined") refObj.refObjects = [];
@@ -370,7 +370,7 @@ function yamlSerializer(options) {
                 //linkHashOut[newObj.id]=key;//this dock is for new objects link to first object = the links
                 newObj.link = key;
                 newObj.obj = refObj.obj;
-            }
+            //}
             return idx;
             //if its a link dont push on history
         }
