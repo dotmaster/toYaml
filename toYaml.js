@@ -3,7 +3,7 @@ var sys = require('sys');
 var defaults = {
     enableLinks: true,
     //default
-    yamlCompatible: true,
+    yamlCompatible: false,
     //default
     usePadding: true,
     extendObjects: false,
@@ -14,6 +14,9 @@ var defaults = {
     }
 }
 
+function setDefaults(def) {
+   helper.extend(defaults, def);
+}
 
 function extendObjects(bool) {
     if (bool) {
@@ -36,6 +39,7 @@ function preProcessLinks(obj, options){
 exports.extendObjects = extendObjects;
 exports.toYaml = toYaml
 exports.preProcessLinks = preProcessLinks
+exports.setDefaults = setDefaults
 
 function OOToYaml(options) {
     return exports.toYaml(this, options);
@@ -134,7 +138,8 @@ function yamlSerializer(options) {
             return out;
         }
         //if(typeof obj === 'string') return '"'+obj+'"'
-        return obj.obj;
+        out+=obj.obj;
+        return out;
     }
 
     function drawIndent(level, thang) {
@@ -190,14 +195,14 @@ function yamlSerializer(options) {
         if (level > opts.maxLevel) {
             maxLevelError = true;
             maxLevelKeyPath = i + "." + maxLevelKeyPath;
-            newObj.obj = "[MAX LEVEL REACHED]"
+            newObj.obj = opts.yamlCompatible ? "" : "[MAX LEVEL REACHED]"
             return newObj;
         }
 
         // Primitive types cannot have properties
         switch (typeof obj) {
         case 'undefined':
-            newObj.obj = "UNDEFINED";
+            newObj.obj = opts.yamlCompatible ? "" : "UNDEFINED";
             return newObj;
 
         case 'string':
@@ -222,22 +227,11 @@ function yamlSerializer(options) {
         var visible_keys = Object.keys(obj);
         var keys = opts.showHidden ? Object.getOwnPropertyNames(obj) : visible_keys;
 
-        // Functions without properties can be shortcutted.
-        if (typeof obj === 'function' && keys.length === 0) {
-          if (helper.isRegExp(obj)) {
-            newObj.obj= '[regexp]';
-            return newObj;
-          } else {
-            var name = obj.name ? ': ' + obj.name : '';
-            newObj.obj= '[Function' + name + ']';
-            return newObj;            
-          }
-        }
         // check for empty objects
-        if (helper.isEmpty(obj)) {
+        /*if (helper.isEmpty(obj)) {
             newObj.obj = '';
             return newObj;
-        }
+        }*/
 
         // Dates without properties can be shortcutted
         if (helper.isDate(obj)) {
@@ -245,17 +239,13 @@ function yamlSerializer(options) {
             newObj.obj = obj.toUTCString();
             return newObj;
         }
-
-        if (helper.isRegExp(obj)) {
-            newObj.obj = "[REGEXP]";
-            return newObj;
-        }
-
+        
+        //its an object or function
         //generate a local uId
         var uId = uniqueId('object');
         //each object gets an id also if its linked
         newObj.id = uId;
-
+        
         //check if its a circular link first
         //CHECK HERE FOR CIRCLES LEAVE THIS HERE ! OTHERWISE IT WILL PUSH PRIMITIVE OBJECTS ON THE CIRCLE PATH, YOU DON'T WANT THAT!
         var idx;
@@ -270,7 +260,19 @@ function yamlSerializer(options) {
             return newObj;
         }
 
-
+        // all Functions get shortcutted right now
+        if (typeof obj === 'function' ){//&& keys.length === 0) {
+          if (helper.isRegExp(obj)) {
+            newObj.obj = opts.yamlCompatible ? "" : '[regexp]';
+            newObj.type='function'
+            return newObj;
+          } else {
+            var name = obj.name ? ': ' + obj.name : '';
+            newObj.obj = opts.yamlCompatible ? "" : '[Function' + name + ']';
+            newObj.type='function'            
+            return newObj;            
+          }
+        }
 
         if (Object.prototype.toString.call(obj) === '[object Array]') {
             newObj.obj = [];
@@ -305,7 +307,6 @@ function yamlSerializer(options) {
 
     function searchLink(newObj) {
         //id
-        debugger;
         if (newObj.ref) return {
             'text': '&' + newObj.id,
             'stop': false
@@ -356,7 +357,6 @@ function yamlSerializer(options) {
         var idx = -1;
         if ((idx = obja.indexOf(newObj.obj)) > -1) {
             //loop
-            debugger;
             var key = newoba[idx].id;
             //hash lookup
             var refObj = newoba[idx];

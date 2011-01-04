@@ -1,6 +1,13 @@
 0.0.7 / 2010-12-30
 ==================
 
+  * now works with real world objects
+  * support for functional links and functional objects (although tis will not reencode into TJ's yaml parser yet)
+  * heavy refactoring and testing ;)
+
+0.0.7 / 2010-12-30
+==================
+
   * Changed name to toYaml
   
 0.0.6 / 2010-12-30

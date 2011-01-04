@@ -2,6 +2,7 @@ YAML=require('./toYaml');
 _=require('./support/underscore/underscore');
 var sys=require('sys');
 
+YAML.setDefaults({yamlCompatible:true});
 
 
 preProcessLinks=YAML.preProcessLinks;
@@ -62,7 +63,12 @@ console.log (yaml_text);
 console.log('\n\n------------functional Style with enableLinks: false-------------');
 yaml_text = YAML.toYaml(complexObj, {enableLinks:false});
 console.log (yaml_text);
+console.log('\n\n------------a function reference-------------');
+var f= function(){};
+yaml_text = YAML.toYaml({a_function:f, some:{other:[{linkToAFunction:f}]},and:{someMoreFunc:function(){}}});
+console.log (yaml_text);
 //encode back to JSON (please npm install yaml to do this or git update --init --recursive submodules)
+
 
 
 var yaml=YAML.toYaml({});

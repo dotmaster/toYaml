@@ -38,11 +38,21 @@ call node test.js to run the tests
 ## Options ##
 * you can enable links creation by passing {enableLinks:true} to toYaml({'enableLinks':true})
 Default is on; But some serializers might not understand it, so you can turn it off, by passing false;
-* if you don't need to reencode with yaml from TJ Holowaychuk you can use the option {yamlCompatible:false} to make the output look even more human readable on lists, however it will fail to reencode into JSON
+* if you need to reencode with yaml from TJ Holowaychuk you can use the option {yamlCompatible:true} to make the output look even more human readable on lists, default is false and will fail to reencode into JSON
 
 * there is a security mechanism for circularity which defaults to a depth level of 50 iterations. If you want to set deeper limits set maxLevel to the depth you need.
 
 * usePadding: uses a look ahead algorithm to see which is the longest hashtag in a group and pads out the others to match the maximum length  
+
+* setDefaults: set default options to be used by all calls to YAML: e.g. YAML.setDefaults({YAMLCompatible:true});
+
+## Exported functions ##
+
+- toYaml(obj, opts) or obj.toYaml(opts) ... the YAML serializer
+- setDefaults(defaults) ... a function for setting the default options
+
+//mainly for testing purpose, returns the output of preprocessing links
+- preProcessLinks (obj, opts) or obj.preProcessLinks(opts)
 
 ## Dependencies ##
 
