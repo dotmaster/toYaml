@@ -1,4 +1,4 @@
-YAML=require('./jsonToYaml');
+YAML=require('./toYaml');
 _=require('./support/underscore/underscore');
 var sys=require('sys');
 
@@ -10,7 +10,7 @@ preProcessLinks=YAML.preProcessLinks;
 var link=[{s:"hello"}];
 var refactoredObj = preProcessLinks([{x:link},{y:7, link:link, assafdsf:link}]);
 
-if((refactoredObj.obj[0].obj.x.obj[0].obj.s.obj)=="hello") 
+if((refactoredObj.obj[0].obj.x.obj[0].obj.s.obj)=="\'hello\'") 
   console.log("preProcessLinks new Object composition Test passed");
 else 
   console.log("ERROR: preProcessLinks new Object composition Test did not pass"); 
@@ -25,7 +25,7 @@ helper.test.threeway.circularity=circularObject2;
 
 try {
   var refactoredObj =  preProcessLinks(helper, {'maxLevel':50});
-  if(_.isEmpty(refactoredObj.obj.test.obj.threeway.obj.circularity.obj.someAttr.obj.attr.obj.name.obj)) 
+  if(refactoredObj.obj.test.obj.threeway.obj.circularity.obj.someAttr.obj.attr.obj.name.link=='object1') 
     console.log("preProcessLinks on circular Object Test passed\n");
   else throw new Error()
 }catch (e){
