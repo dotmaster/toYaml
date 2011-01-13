@@ -1,5 +1,5 @@
 {
-   "name": "jsonToYaml",
+   "name": "toYaml",
    "description": "A simple JSON to YAML  serializer - dumper - encoder - whatever",
    "tags": [
        "yaml",
