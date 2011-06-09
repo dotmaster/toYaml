@@ -8,7 +8,7 @@
        "json",
        "dumper",
        "serialize",
-       "node" //what else ? ;)
+       "node"
    ],
    "version": "0.0.8",
    "author": {
