@@ -1,6 +1,7 @@
 # toYaml - A json to yaml serializer  #
 
-toYaml is a very simple and superfast JSON to YAML serializer - encoder - dumper - whatever you like ;)
+toYaml is a very simple and superfast JSON to YAML serializer - encoder - dumper - whatever you like ;)  
+NEW: from 1.0.0 you can use toYAML directly from the command line
 
 ## Features and Support ##
 
@@ -16,24 +17,46 @@ right now it doen't support the spec completely. It just works for my use case ;
 
 toYaml substantially is a deep copier! It works in a two pass process! First it does some preprocessing, where it searches for linked objects and enumerates them in the hashes linkHashIn (the links under the key references), and linkHashOut (the referenced object under the key of the linking object). It thereby also creates an enumerated new Object which it passes to the YAML parser. The enumerated object contains each object under the key 'obj' and a unique id for reference under the key "id". The second stage is a pass over the newly constructed Object and outputs the objects with proper indentation and references.
 
-## Usage ##
+## Usage from Command line ##
 
 Usage is simple:
 
-npm install toYaml
+    npm install toYaml
+    
+then from the command line 
 
-YAML=require ('toYaml');
+a) File mode (pass in a well formatted JSON file! check the [Online JSON parser](http://json.parser.online.fr/)  for well formatted JSON)   
 
-Then you can use it in an OO fashion style:
-calling YAML.extendObjects(true);
-{'YAML': {'aint':{'markup': 'language'}}}.toYaml();
+    toYaml filename.js [-o outputname](@see --help to get more options)   
+      
+b) HERDOC or pipe mode (like cat file >> toYaml or toYAM << HEREDOC>>)  will outpu to STDOUT       
+  
+    toYaml <<HEREDOC
+    {"hello":"world"}
+    HEREDOC
 
-ot if you orefer the functional style:
-YAML.toYaml({'YAML': {'aint':{'markup': 'language'}}});
+c) pass JSON directly as first command line argument only single line (for multiline usse b))
+    toYaml '{"hello":"world"}'                    
+    
+## Usage as a module##
+
+Usage is simple:
+
+    npm install toYaml
+
+    YAML=require ('toYaml');
+
+    Then you can use it in an OO fashion style:
+    calling YAML.extendObjects(true);
+    {'YAML': {'aint':{'markup': 'language'}}}.toYaml();
+
+    ot if you orefer the functional style:
+    YAML.toYaml({'YAML': {'aint':{'markup': 'language'}}});
 
 ## Test cases ##
 
-call node test.js to run the tests
+call node test.js to run the tests 
+or call toYaml yamayam.js to transform it into a yaml file 
  
 ## Options ##
 * you can enable links creation by passing {enableLinks:true} to toYaml({'enableLinks':true})
@@ -56,7 +79,7 @@ Default is on; But some serializers might not understand it, so you can turn it 
 
 ## Dependencies ##
 
-none
+optimist
 
 ## Todos ##
 

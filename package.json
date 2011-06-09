@@ -10,7 +10,7 @@
        "serialize",
        "node"
    ],
-   "version": "0.0.9",
+   "version": "1.0.0",
    "author": {
       "name" : "Gregor Schwab", 
       "email" : "gregor@connect-mi.com",
@@ -26,6 +26,8 @@
    ],
    "main": "toYaml.js",
    "license" : "MIT License (see Readme)",
-   "dependencies": {          
-    }
+   "dependencies": {   
+       "optimist": ">= 0.1.3"
+    },
+    "bin" : { "toYaml" : "./cl.js" }    
 }

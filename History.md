@@ -1,3 +1,11 @@
+1.0.0 / 2011-06-09
+==================
+  * added support for using toYaml from the command line   
+
+0.0.9 / 2011-06-09
+==================
+  * package.json parsing fix
+     
 0.0.7 / 2010-12-30
 ==================
 
